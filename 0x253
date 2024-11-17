@@ -1,0 +1,35 @@
+section .data
+    msg db 'Hello, world!', 0
+
+section .bss
+    i resb 4
+
+section .text
+    global _start
+
+_start:
+    ; Inicializar i a 0
+    xor rsi, rsi                ; rsi = 0 (i)
+    
+.loop:
+    ; Comparar i con 10
+    cmp rsi, 10
+    jge .end_loop                ; Si i >= 10, salir del bucle
+
+    ; Llamada al sistema para escribir en stdout
+    mov rax, 1                   ; sys_write
+    mov rdi, 1                   ; file descriptor 1 (stdout)
+    mov rdx, 14                  ; longitud de "Hello, world!\n"
+    lea rsi, [msg]               ; cargar la dirección de msg
+    syscall                      ; llamada al sistema
+
+    ; Incrementar i
+    inc rsi                       ; i++
+
+    jmp .loop                     ; Volver al inicio del bucle
+
+.end_loop:
+    ; Llamada al sistema para salir (exit)
+    mov rax, 60                  ; sys_exit
+    xor rdi, rdi                 ; estado de salida 0
+    syscall                      ; llamada al sistema
