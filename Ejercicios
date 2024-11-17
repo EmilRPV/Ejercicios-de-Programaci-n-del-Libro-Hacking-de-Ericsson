@@ -1,0 +1,46 @@
+;Ejercicios de Programación del Libro Hacking de Ericsson
+
+;Algoritmos Maliciosos
+
+
+;0x251
+
+section .data
+    msg db "Mensaje", 0xA      ; La cadena "Mensaje" con salto de línea
+    msg_len equ $ - msg         ; Calcula la longitud de "Mensaje"
+
+section .bss
+    counter resb 4              ; Reserva espacio para la variable counter
+
+section .text
+    global _start               ; Punto de entrada
+
+_start:
+    ; Inicializa el contador a 0
+    mov dword [counter], 0
+
+loop_start:
+    ; Compara counter con 9
+    mov eax, [counter]
+    cmp eax, 9
+    jg end_loop                 ; Si counter > 9, salta fuera del bucle
+
+    ; Llama a write para imprimir el mensaje
+    mov rax, 1                  ; syscall número para write (en 64 bits)
+    mov rdi, 1                  ; file descriptor 1 (stdout)
+    mov rsi, msg                ; dirección del mensaje
+    mov rdx, msg_len            ; longitud del mensaje
+    syscall                     ; llamada al sistema en modo 64 bits
+
+    ; Incrementa el contador
+    add dword [counter], 1
+    jmp loop_start              ; Regresa al inicio del bucle
+
+end_loop:
+    ; Llama a exit
+    mov rax, 60                 ; syscall número para exit en 64 bits
+    xor rdi, rdi                ; código de salida 0
+    syscall
+
+
+;
