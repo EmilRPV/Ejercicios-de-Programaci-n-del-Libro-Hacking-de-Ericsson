@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str_a[20]; // A 20-element character array
+    char *pointer; // A pointer, meant for a character array
+    char *pointer2; // And yet another one
+
+    strcpy(str_a, "Hello, world!\n");  // Copy initial string into str_a
+    pointer = str_a; // Set the first pointer to the start of the array
+    printf("%s", pointer); // Print the string
+
+    pointer2 = pointer + 2; // Set the second pointer 2 bytes further in
+    printf("%s", pointer2); // Print the string starting from pointer2
+
+    strcpy(pointer2, "y you guys!\n"); // Copy into that spot (overwriting part of the original string)
+    printf("%s", pointer); // Print the modified string again
+
+    return 0;
+}
